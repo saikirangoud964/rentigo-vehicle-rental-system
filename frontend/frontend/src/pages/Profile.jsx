@@ -20,6 +20,8 @@ function Profile() {
     try {
       const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
+      if (!userInfo?.token) return;
+
       const { data } = await axios.get(
         "https://rentigo-vehicle-rental-system.onrender.com/api/bookings/my-bookings",
         {
@@ -34,7 +36,8 @@ function Profile() {
       setBookingCount(bookings.length);
 
       const amount = bookings.reduce(
-        (sum, booking) => sum + (booking.totalPrice || 0),
+        (sum, booking) =>
+          sum + Number(booking.amountPaid || booking.totalPrice || 0),
         0,
       );
 
@@ -45,49 +48,163 @@ function Profile() {
   };
 
   if (!user) {
-    return <h2 style={{ padding: "20px" }}>Loading...</h2>;
+    return <h2 style={loadingStyle}>Loading...</h2>;
   }
 
   return (
-    <div
-      style={{
-        maxWidth: "800px",
-        margin: "40px auto",
-        padding: "30px",
-        background: "#fff",
-        borderRadius: "15px",
-        boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-      }}
-    >
-      <h1>👤 My Profile</h1>
+    <div style={pageStyle}>
+      <div style={cardStyle}>
+        <div style={profileHeaderStyle}>
+          <div style={avatarStyle}>{user.name?.charAt(0)?.toUpperCase()}</div>
 
-      <hr />
+          <div>
+            <h1 style={titleStyle}>👤 My Profile</h1>
+            <p style={subtitleStyle}>Manage your account information</p>
+          </div>
+        </div>
 
-      <p>
-        <strong>Name:</strong> {user.name}
-      </p>
+        <hr style={dividerStyle} />
 
-      <p>
-        <strong>Email:</strong> {user.email}
-      </p>
+        <div style={infoGridStyle}>
+          <div style={infoBoxStyle}>
+            <span style={labelStyle}>Name</span>
+            <strong style={valueStyle}>{user.name}</strong>
+          </div>
 
-      <p>
-        <strong>Role:</strong> {user.role}
-      </p>
+          <div style={infoBoxStyle}>
+            <span style={labelStyle}>Email</span>
+            <strong style={valueStyle}>{user.email}</strong>
+          </div>
 
-      <hr />
+          <div style={infoBoxStyle}>
+            <span style={labelStyle}>Role</span>
+            <strong style={valueStyle}>{user.role}</strong>
+          </div>
+        </div>
 
-      <h2>📊 Booking Statistics</h2>
+        <hr style={dividerStyle} />
 
-      <p>
-        <strong>Total Bookings:</strong> {bookingCount}
-      </p>
+        <h2 style={sectionTitleStyle}>📊 Booking Statistics</h2>
 
-      <p>
-        <strong>Total Amount Spent:</strong> ₹{totalSpent}
-      </p>
+        <div style={statsGridStyle}>
+          <div style={statCardStyle}>
+            <h3>{bookingCount}</h3>
+            <p>Total Bookings</p>
+          </div>
+
+          <div style={statCardStyle}>
+            <h3>₹{totalSpent.toLocaleString()}</h3>
+            <p>Total Amount Spent</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
+
+const loadingStyle = {
+  padding: "30px",
+  textAlign: "center",
+};
+
+const pageStyle = {
+  minHeight: "80vh",
+  background: "#f9fafb",
+  padding: "clamp(16px, 4vw, 40px)",
+  boxSizing: "border-box",
+};
+
+const cardStyle = {
+  maxWidth: "850px",
+  margin: "0 auto",
+  padding: "clamp(22px, 4vw, 35px)",
+  background: "#fff",
+  borderRadius: "18px",
+  boxShadow: "0 4px 18px rgba(0,0,0,0.1)",
+  boxSizing: "border-box",
+};
+
+const profileHeaderStyle = {
+  display: "flex",
+  alignItems: "center",
+  gap: "18px",
+  flexWrap: "wrap",
+};
+
+const avatarStyle = {
+  width: "70px",
+  height: "70px",
+  borderRadius: "50%",
+  background: "#111827",
+  color: "#fff",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  fontSize: "30px",
+  fontWeight: "bold",
+};
+
+const titleStyle = {
+  margin: 0,
+  fontSize: "clamp(28px, 5vw, 40px)",
+  color: "#111827",
+};
+
+const subtitleStyle = {
+  marginTop: "6px",
+  color: "#6b7280",
+};
+
+const dividerStyle = {
+  margin: "25px 0",
+  border: "none",
+  borderTop: "1px solid #e5e7eb",
+};
+
+const infoGridStyle = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+  gap: "18px",
+};
+
+const infoBoxStyle = {
+  background: "#f3f4f6",
+  padding: "18px",
+  borderRadius: "14px",
+  display: "flex",
+  flexDirection: "column",
+  gap: "8px",
+  overflowWrap: "break-word",
+};
+
+const labelStyle = {
+  color: "#6b7280",
+  fontSize: "14px",
+};
+
+const valueStyle = {
+  color: "#111827",
+  fontSize: "16px",
+  wordBreak: "break-word",
+};
+
+const sectionTitleStyle = {
+  fontSize: "clamp(24px, 4vw, 30px)",
+  marginBottom: "18px",
+};
+
+const statsGridStyle = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+  gap: "18px",
+};
+
+const statCardStyle = {
+  background: "#eef2ff",
+  color: "#111827",
+  padding: "22px",
+  borderRadius: "14px",
+  textAlign: "center",
+};
 
 export default Profile;
