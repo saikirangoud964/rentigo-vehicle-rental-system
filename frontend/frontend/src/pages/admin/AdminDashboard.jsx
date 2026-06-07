@@ -121,6 +121,7 @@ function AdminDashboard() {
           <button style={btnStyle}>Manage Bookings</button>
         </Link>
       </div>
+      <br></br>
 
       <div style={gridStyle}>
         <Card title="👥 Total Users" value={analytics?.usersCount || 0} />
