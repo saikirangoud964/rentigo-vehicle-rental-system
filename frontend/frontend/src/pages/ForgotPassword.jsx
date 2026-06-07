@@ -27,7 +27,6 @@ function ForgotPassword() {
       navigate("/verify-otp");
     } catch (error) {
       console.log("OTP ERROR:", error.response?.data || error.message || error);
-
       alert(error.response?.data?.message || "Failed to send OTP");
     } finally {
       setLoading(false);
@@ -73,21 +72,23 @@ const pageStyle = {
   justifyContent: "center",
   alignItems: "center",
   background: "linear-gradient(135deg, #eef2ff, #f8fafc)",
-  padding: "30px",
+  padding: "clamp(16px, 5vw, 30px)",
+  boxSizing: "border-box",
 };
 
 const cardStyle = {
   width: "100%",
   maxWidth: "420px",
-  padding: "35px",
+  padding: "clamp(24px, 5vw, 35px)",
   background: "#fff",
   borderRadius: "18px",
   boxShadow: "0 12px 30px rgba(0,0,0,0.12)",
   textAlign: "center",
+  boxSizing: "border-box",
 };
 
 const titleStyle = {
-  fontSize: "30px",
+  fontSize: "clamp(26px, 5vw, 30px)",
   marginBottom: "10px",
   color: "#111827",
 };
@@ -95,6 +96,7 @@ const titleStyle = {
 const subtitleStyle = {
   color: "#6b7280",
   marginBottom: "25px",
+  fontSize: "clamp(15px, 2vw, 16px)",
 };
 
 const inputStyle = {
@@ -123,6 +125,7 @@ const btnStyle = {
 const backTextStyle = {
   marginTop: "20px",
   color: "#6b7280",
+  fontSize: "15px",
 };
 
 const linkStyle = {
