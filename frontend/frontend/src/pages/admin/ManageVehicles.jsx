@@ -386,7 +386,7 @@ const actionBox = {
 };
 
 const editBtn = {
-  background: "#2563eb",
+  background: "linear-gradient(135deg,#06b6d4,#2563eb)",
   color: "#fff",
   border: "none",
   padding: "11px 15px",
@@ -397,7 +397,7 @@ const editBtn = {
 };
 
 const deleteBtn = {
-  background: "#dc2626",
+  background: "linear-gradient(135deg,#f97316,#ef4444)",
   color: "#fff",
   border: "none",
   padding: "11px 15px",
