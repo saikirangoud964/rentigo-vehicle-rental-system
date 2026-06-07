@@ -199,7 +199,7 @@ function ManageVehicles() {
                 <div style={actionBox}>
                   <Link
                     to={`/admin/edit-vehicle/${vehicle._id}`}
-                    style={linkStyle}
+                    style={buttonLinkStyle}
                   >
                     <button style={editBtn}>Edit Vehicle</button>
                   </Link>
@@ -236,6 +236,10 @@ const titleStyle = {
   fontSize: "clamp(30px, 5vw, 42px)",
   color: "#111827",
   marginBottom: "8px",
+};
+const buttonLinkStyle = {
+  textDecoration: "none",
+  width: "100%",
 };
 
 const subtitleStyle = {
@@ -301,7 +305,6 @@ const addBtn = {
 
 const linkStyle = {
   textDecoration: "none",
-  flex: "1 1 160px",
 };
 
 const vehicleGrid = {
