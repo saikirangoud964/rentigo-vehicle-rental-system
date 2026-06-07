@@ -98,32 +98,50 @@ function AdminDashboard() {
   const COLORS = ["#f59e0b", "#10b981", "#6b7280", "#2563eb", "#ef4444"];
 
   if (loading) {
-    return <h2 style={{ padding: "40px" }}>Loading dashboard...</h2>;
+    return <h2 style={loadingStyle}>Loading dashboard...</h2>;
   }
 
   return (
     <div style={pageStyle}>
-      <h1 style={{ marginBottom: "8px" }}>Admin Dashboard</h1>
-      <p style={{ color: "#6b7280", marginBottom: "30px" }}>
+      <h1 style={headingStyle}>Admin Dashboard</h1>
+
+      <p style={subHeadingStyle}>
         Advanced analytics for users, vehicles, bookings, revenue and growth.
       </p>
+      <div style={quickActions}>
+        <Link to="/admin/add-vehicle" style={actionLinkStyle}>
+          <button style={btnStyle}>Add Vehicle</button>
+        </Link>
+
+        <Link to="/admin/vehicles" style={actionLinkStyle}>
+          <button style={btnStyle}>Manage Vehicles</button>
+        </Link>
+
+        <Link to="/admin/bookings" style={actionLinkStyle}>
+          <button style={btnStyle}>Manage Bookings</button>
+        </Link>
+      </div>
 
       <div style={gridStyle}>
         <Card title="👥 Total Users" value={analytics?.usersCount || 0} />
         <Card title="🚗 Total Vehicles" value={analytics?.vehiclesCount || 0} />
         <Card title="📘 Total Bookings" value={analytics?.bookingsCount || 0} />
+
         <Card
           title="💳 Paid Bookings"
           value={analytics?.paidBookingsCount || 0}
         />
+
         <Card
           title="💰 Total Revenue"
           value={`₹${Number(analytics?.totalRevenue || 0).toLocaleString()}`}
         />
+
         <Card
           title="📈 Booking Growth"
           value={`${analytics?.bookingGrowth || 0}%`}
         />
+
         <Card
           title="💹 Revenue Growth"
           value={`${analytics?.revenueGrowth || 0}%`}
@@ -155,6 +173,7 @@ function AdminDashboard() {
       <div style={highlightGrid}>
         <div style={highlightCard}>
           <h2>🏆 Most Booked Vehicle</h2>
+
           {analytics?.mostBookedVehicle ? (
             <>
               <h3>{analytics.mostBookedVehicle.vehicleName}</h3>
@@ -168,6 +187,7 @@ function AdminDashboard() {
 
         <div style={highlightCard}>
           <h2>⭐ Most Active User</h2>
+
           {analytics?.mostActiveUser ? (
             <>
               <h3>{analytics.mostActiveUser.userName}</h3>
@@ -209,7 +229,7 @@ function AdminDashboard() {
                 data={bookingStatusData}
                 dataKey="value"
                 nameKey="name"
-                outerRadius={100}
+                outerRadius={90}
                 label
               >
                 {bookingStatusData.map((entry, index) => (
@@ -378,15 +398,15 @@ function AdminDashboard() {
       </div>
 
       <div style={quickActions}>
-        <Link to="/admin/add-vehicle">
+        <Link to="/admin/add-vehicle" style={actionLinkStyle}>
           <button style={btnStyle}>Add Vehicle</button>
         </Link>
 
-        <Link to="/admin/vehicles">
+        <Link to="/admin/vehicles" style={actionLinkStyle}>
           <button style={btnStyle}>Manage Vehicles</button>
         </Link>
 
-        <Link to="/admin/bookings">
+        <Link to="/admin/bookings" style={actionLinkStyle}>
           <button style={btnStyle}>Manage Bookings</button>
         </Link>
       </div>
@@ -398,57 +418,82 @@ function Card({ title, value }) {
   return (
     <div style={cardStyle}>
       <h3>{title}</h3>
-      <h1>{value}</h1>
+      <h1 style={cardValueStyle}>{value}</h1>
     </div>
   );
 }
 
-const pageStyle = {
+const loadingStyle = {
   padding: "40px",
+  textAlign: "center",
+};
+
+const pageStyle = {
+  padding: "clamp(15px, 4vw, 40px)",
   background: "#f9fafb",
   minHeight: "100vh",
+  boxSizing: "border-box",
+};
+
+const headingStyle = {
+  marginBottom: "8px",
+  fontSize: "clamp(28px, 5vw, 42px)",
+  color: "#111827",
+};
+
+const subHeadingStyle = {
+  color: "#6b7280",
+  marginBottom: "30px",
+  fontSize: "clamp(15px, 2vw, 17px)",
 };
 
 const gridStyle = {
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+  gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))",
   gap: "20px",
   marginBottom: "35px",
 };
 
 const highlightGrid = {
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+  gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
   gap: "20px",
   marginBottom: "35px",
 };
 
 const highlightCard = {
   background: "#fff",
-  padding: "25px",
+  padding: "clamp(18px, 3vw, 25px)",
   borderRadius: "12px",
   boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
   borderLeft: "6px solid #2563eb",
+  overflowWrap: "break-word",
 };
 
 const chartGridStyle = {
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))",
+  gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
   gap: "20px",
   marginBottom: "35px",
 };
 
 const cardStyle = {
   background: "#fff",
-  padding: "25px",
+  padding: "clamp(18px, 3vw, 25px)",
   borderRadius: "12px",
   textAlign: "center",
   boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+  overflowWrap: "break-word",
+};
+
+const cardValueStyle = {
+  fontSize: "clamp(26px, 4vw, 36px)",
+  margin: 0,
 };
 
 const tableBoxStyle = {
   background: "#fff",
-  padding: "25px",
+  padding: "clamp(15px, 3vw, 25px)",
   borderRadius: "12px",
   boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
   marginBottom: "35px",
@@ -458,19 +503,21 @@ const tableBoxStyle = {
 const tableStyle = {
   width: "100%",
   borderCollapse: "collapse",
-  minWidth: "700px",
+  minWidth: "600px",
 };
 
 const thStyle = {
   padding: "14px",
   border: "1px solid #ddd",
   background: "#f3f4f6",
+  whiteSpace: "nowrap",
 };
 
 const tdStyle = {
   padding: "14px",
   border: "1px solid #ddd",
   textAlign: "center",
+  whiteSpace: "nowrap",
 };
 
 const statusStyle = (status) => ({
@@ -478,6 +525,7 @@ const statusStyle = (status) => ({
   padding: "6px 12px",
   borderRadius: "20px",
   textTransform: "capitalize",
+  display: "inline-block",
   background:
     status === "pending"
       ? "orange"
@@ -494,6 +542,7 @@ const paymentStyle = (status) => ({
   color: "white",
   padding: "6px 12px",
   borderRadius: "20px",
+  display: "inline-block",
   background:
     status === "Paid" ? "green" : status === "Failed" ? "red" : "orange",
 });
@@ -502,16 +551,23 @@ const quickActions = {
   display: "flex",
   gap: "15px",
   flexWrap: "wrap",
+  justifyContent: "center",
   marginTop: "30px",
 };
 
+const actionLinkStyle = {
+  textDecoration: "none",
+};
+
 const btnStyle = {
-  padding: "10px 15px",
+  padding: "12px 18px",
   border: "none",
   borderRadius: "8px",
   background: "#111827",
   color: "white",
   cursor: "pointer",
+  minWidth: "180px",
+  fontWeight: "600",
 };
 
 export default AdminDashboard;
