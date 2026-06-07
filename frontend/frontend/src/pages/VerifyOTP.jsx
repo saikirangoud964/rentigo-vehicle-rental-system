@@ -1,20 +1,33 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
-function VerifyOTP() {
+function ResetPassword() {
   const navigate = useNavigate();
-  const [otp, setOtp] = useState("");
+
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const email = localStorage.getItem("resetEmail");
+  const otp = localStorage.getItem("resetOTP");
 
-  const verifyOTP = async (e) => {
+  const resetPassword = async (e) => {
     e.preventDefault();
 
-    if (!email) {
-      alert("Email not found. Please try again.");
+    if (!email || !otp) {
+      alert("Reset session expired. Please try again.");
       navigate("/forgot-password");
+      return;
+    }
+
+    if (newPassword.length < 5) {
+      alert("Password must be at least 5 characters");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      alert("Passwords do not match");
       return;
     }
 
@@ -22,70 +35,134 @@ function VerifyOTP() {
       setLoading(true);
 
       await axios.post(
-        "https://rentigo-vehicle-rental-system.onrender.com/api/auth/verify-otp",
-        { email, otp },
+        "https://rentigo-vehicle-rental-system.onrender.com/api/auth/reset-password",
+        {
+          email,
+          otp,
+          newPassword,
+        },
       );
 
-      localStorage.setItem("resetOTP", otp);
+      localStorage.removeItem("resetEmail");
+      localStorage.removeItem("resetOTP");
 
-      alert("OTP verified successfully");
-      navigate("/reset-password");
+      alert("Password reset successful. Please login.");
+      navigate("/login");
     } catch (error) {
-      alert(error.response?.data?.message || "Invalid OTP");
+      alert(error.response?.data?.message || "Password reset failed");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={cardStyle}>
-      <h2>Verify OTP 📩</h2>
-      <p>OTP sent to: {email}</p>
+    <div style={pageStyle}>
+      <div style={cardStyle}>
+        <h2 style={titleStyle}>Reset Password 🔑</h2>
 
-      <form onSubmit={verifyOTP}>
-        <input
-          type="text"
-          placeholder="Enter 6-digit OTP"
-          value={otp}
-          onChange={(e) => setOtp(e.target.value)}
-          required
-          style={inputStyle}
-        />
+        <p style={subtitleStyle}>Create a new password for your account.</p>
 
-        <button disabled={loading} style={btnStyle}>
-          {loading ? "Verifying..." : "Verify OTP"}
-        </button>
-      </form>
+        <form onSubmit={resetPassword}>
+          <input
+            type="password"
+            placeholder="New password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            required
+            style={inputStyle}
+          />
+
+          <input
+            type="password"
+            placeholder="Confirm password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+            style={inputStyle}
+          />
+
+          <button disabled={loading} style={btnStyle}>
+            {loading ? "Resetting..." : "Reset Password"}
+          </button>
+        </form>
+
+        <p style={backTextStyle}>
+          Remember password?{" "}
+          <Link to="/login" style={linkStyle}>
+            Back to Login
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }
 
+const pageStyle = {
+  minHeight: "calc(100vh - 90px)",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  background: "linear-gradient(135deg, #eef2ff, #f8fafc)",
+  padding: "clamp(16px, 5vw, 30px)",
+  boxSizing: "border-box",
+};
+
 const cardStyle = {
+  width: "100%",
   maxWidth: "420px",
-  margin: "80px auto",
-  padding: "30px",
+  padding: "clamp(24px, 5vw, 35px)",
   background: "#fff",
-  borderRadius: "16px",
-  boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+  borderRadius: "18px",
+  boxShadow: "0 12px 30px rgba(0,0,0,0.12)",
   textAlign: "center",
+  boxSizing: "border-box",
+};
+
+const titleStyle = {
+  fontSize: "clamp(26px, 5vw, 30px)",
+  marginBottom: "10px",
+  color: "#111827",
+};
+
+const subtitleStyle = {
+  color: "#6b7280",
+  marginBottom: "25px",
+  fontSize: "clamp(15px, 2vw, 16px)",
 };
 
 const inputStyle = {
   width: "100%",
-  padding: "12px",
-  margin: "20px 0",
-  borderRadius: "8px",
-  border: "1px solid #ccc",
+  padding: "13px",
+  marginBottom: "16px",
+  borderRadius: "10px",
+  border: "1px solid #d1d5db",
+  fontSize: "15px",
+  outline: "none",
+  boxSizing: "border-box",
 };
 
 const btnStyle = {
   width: "100%",
-  padding: "12px",
+  padding: "14px",
   background: "#111827",
   color: "white",
   border: "none",
-  borderRadius: "8px",
+  borderRadius: "10px",
   cursor: "pointer",
+  fontSize: "16px",
+  fontWeight: "bold",
 };
 
-export default VerifyOTP;
+const backTextStyle = {
+  marginTop: "20px",
+  color: "#6b7280",
+  fontSize: "15px",
+};
+
+const linkStyle = {
+  color: "#2563eb",
+  textDecoration: "none",
+  fontWeight: "bold",
+};
+
+export default ResetPassword;
