@@ -78,6 +78,7 @@ function Register() {
     <div style={pageStyle}>
       <div style={leftBoxStyle}>
         <h1 style={heroTitle}>Join RentiGo 🚗</h1>
+
         <p style={heroText}>
           Create your account and book bikes, scooters, cars, and SUVs easily.
         </p>
@@ -92,10 +93,12 @@ function Register() {
 
       <div style={cardStyle}>
         <h2 style={titleStyle}>Create Account</h2>
+
         <p style={subtitleStyle}>Register to start your rental journey</p>
 
         <form onSubmit={handleSubmit}>
           <label style={labelStyle}>Full Name</label>
+
           <input
             type="text"
             name="name"
@@ -107,6 +110,7 @@ function Register() {
           />
 
           <label style={labelStyle}>Email Address</label>
+
           <input
             type="email"
             name="email"
@@ -118,6 +122,7 @@ function Register() {
           />
 
           <label style={labelStyle}>Password</label>
+
           <div style={passwordBoxStyle}>
             <input
               type={showPassword ? "text" : "password"}
@@ -139,6 +144,7 @@ function Register() {
           </div>
 
           <label style={labelStyle}>Confirm Password</label>
+
           <input
             type={showPassword ? "text" : "password"}
             name="confirmPassword"
@@ -168,25 +174,27 @@ function Register() {
 const pageStyle = {
   minHeight: "calc(100vh - 90px)",
   display: "grid",
-  gridTemplateColumns: "1fr 1fr",
-  gap: "40px",
+  gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+  gap: "clamp(25px, 5vw, 40px)",
   alignItems: "center",
-  padding: "50px",
+  padding: "clamp(20px, 5vw, 50px)",
   background: "linear-gradient(135deg, #eef2ff, #f8fafc)",
+  boxSizing: "border-box",
 };
 
 const leftBoxStyle = {
-  padding: "30px",
+  padding: "clamp(10px, 3vw, 30px)",
 };
 
 const heroTitle = {
-  fontSize: "48px",
+  fontSize: "clamp(32px, 5vw, 48px)",
   color: "#111827",
   marginBottom: "15px",
+  lineHeight: "1.2",
 };
 
 const heroText = {
-  fontSize: "20px",
+  fontSize: "clamp(16px, 2vw, 20px)",
   color: "#4b5563",
   lineHeight: "1.6",
   maxWidth: "520px",
@@ -195,10 +203,10 @@ const heroText = {
 const featureBox = {
   marginTop: "30px",
   background: "white",
-  padding: "25px",
+  padding: "clamp(18px, 3vw, 25px)",
   borderRadius: "16px",
   boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
-  fontSize: "17px",
+  fontSize: "clamp(15px, 2vw, 17px)",
   color: "#111827",
   maxWidth: "420px",
 };
@@ -207,15 +215,16 @@ const cardStyle = {
   width: "100%",
   maxWidth: "440px",
   background: "#fff",
-  padding: "35px",
+  padding: "clamp(24px, 4vw, 35px)",
   borderRadius: "20px",
   boxShadow: "0 12px 30px rgba(0,0,0,0.12)",
   justifySelf: "center",
+  boxSizing: "border-box",
 };
 
 const titleStyle = {
   textAlign: "center",
-  fontSize: "30px",
+  fontSize: "clamp(26px, 4vw, 30px)",
   marginBottom: "8px",
   color: "#111827",
 };
@@ -241,6 +250,7 @@ const inputStyle = {
   borderRadius: "10px",
   fontSize: "15px",
   outline: "none",
+  boxSizing: "border-box",
 };
 
 const passwordBoxStyle = {
@@ -258,6 +268,7 @@ const passwordInputStyle = {
   border: "none",
   outline: "none",
   fontSize: "15px",
+  minWidth: 0,
 };
 
 const showBtnStyle = {
@@ -266,6 +277,7 @@ const showBtnStyle = {
   background: "#f3f4f6",
   cursor: "pointer",
   fontWeight: "600",
+  whiteSpace: "nowrap",
 };
 
 const buttonStyle = {
