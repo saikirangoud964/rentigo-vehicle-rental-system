@@ -108,20 +108,6 @@ function AdminDashboard() {
       <p style={subHeadingStyle}>
         Advanced analytics for users, vehicles, bookings, revenue and growth.
       </p>
-      <div style={quickActions}>
-        <Link to="/admin/add-vehicle" style={actionLinkStyle}>
-          <button style={btnStyle}>Add Vehicle</button>
-        </Link>
-
-        <Link to="/admin/vehicles" style={actionLinkStyle}>
-          <button style={btnStyle}>Manage Vehicles</button>
-        </Link>
-
-        <Link to="/admin/bookings" style={actionLinkStyle}>
-          <button style={btnStyle}>Manage Bookings</button>
-        </Link>
-      </div>
-      <br></br>
 
       <div style={gridStyle}>
         <Card title="👥 Total Users" value={analytics?.usersCount || 0} />
