@@ -213,8 +213,9 @@ function ManageBookings() {
 
   return (
     <div style={pageStyle}>
-      <h1 style={{ marginBottom: "8px" }}>Manage Bookings</h1>
-      <p style={{ color: "#6b7280", marginBottom: "25px" }}>
+      <h1 style={titleStyle}>Manage Bookings</h1>
+
+      <p style={subtitleStyle}>
         View, filter, approve, reject, complete and export booking records.
       </p>
 
@@ -301,11 +302,11 @@ function ManageBookings() {
         </button>
       </div>
 
-      <p style={{ marginBottom: "15px", fontWeight: "bold" }}>
+      <p style={resultTextStyle}>
         Showing {filteredBookings.length} of {bookings.length} bookings
       </p>
 
-      <div style={{ overflowX: "auto" }}>
+      <div style={tableWrapperStyle}>
         <table style={tableStyle}>
           <thead>
             <tr>
@@ -368,9 +369,9 @@ function ManageBookings() {
                     </span>
                   </td>
 
-                  <td style={tdStyle}>
+                  <td style={{ ...tdStyle, minWidth: "160px" }}>
                     {booking.status === "pending" && (
-                      <>
+                      <div style={actionBtnBox}>
                         <button
                           style={approveBtn}
                           onClick={() => updateStatus(booking._id, "approved")}
@@ -384,7 +385,7 @@ function ManageBookings() {
                         >
                           Reject
                         </button>
-                      </>
+                      </div>
                     )}
 
                     {booking.status === "approved" && (
@@ -411,14 +412,27 @@ function ManageBookings() {
 }
 
 const pageStyle = {
-  padding: "30px",
+  padding: "clamp(15px, 4vw, 30px)",
   backgroundColor: "#f9fafb",
   minHeight: "80vh",
+  boxSizing: "border-box",
+};
+
+const titleStyle = {
+  marginBottom: "8px",
+  fontSize: "clamp(30px, 5vw, 42px)",
+  color: "#111827",
+};
+
+const subtitleStyle = {
+  color: "#6b7280",
+  marginBottom: "25px",
+  fontSize: "clamp(15px, 2vw, 17px)",
 };
 
 const summaryContainer = {
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+  gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
   gap: "15px",
   marginBottom: "25px",
 };
@@ -444,29 +458,44 @@ const filterBoxStyle = {
 };
 
 const inputStyle = {
+  flex: "1 1 220px",
+  minWidth: "180px",
   padding: "12px",
   border: "1px solid #ccc",
   borderRadius: "8px",
-  minWidth: "220px",
+  boxSizing: "border-box",
+};
+
+const resultTextStyle = {
+  marginBottom: "15px",
+  fontWeight: "bold",
+};
+
+const tableWrapperStyle = {
+  overflowX: "auto",
+  WebkitOverflowScrolling: "touch",
+  borderRadius: "12px",
 };
 
 const tableStyle = {
   width: "100%",
   borderCollapse: "collapse",
   backgroundColor: "#fff",
-  minWidth: "1200px",
+  minWidth: "1100px",
 };
 
 const thStyle = {
   padding: "14px",
   border: "1px solid #ddd",
   backgroundColor: "#f3f4f6",
+  whiteSpace: "nowrap",
 };
 
 const tdStyle = {
   padding: "14px",
   border: "1px solid #ddd",
   textAlign: "center",
+  whiteSpace: "nowrap",
 };
 
 const statusStyle = (status) => ({
@@ -474,6 +503,7 @@ const statusStyle = (status) => ({
   borderRadius: "20px",
   color: "white",
   textTransform: "capitalize",
+  display: "inline-block",
   backgroundColor:
     status === "pending"
       ? "orange"
@@ -490,9 +520,17 @@ const paymentStyle = (status) => ({
   padding: "6px 12px",
   borderRadius: "20px",
   color: "white",
+  display: "inline-block",
   backgroundColor:
     status === "Paid" ? "green" : status === "Failed" ? "red" : "orange",
 });
+
+const actionBtnBox = {
+  display: "flex",
+  gap: "8px",
+  justifyContent: "center",
+  flexWrap: "wrap",
+};
 
 const approveBtn = {
   backgroundColor: "green",
@@ -501,7 +539,6 @@ const approveBtn = {
   padding: "8px 12px",
   borderRadius: "6px",
   cursor: "pointer",
-  marginRight: "8px",
 };
 
 const rejectBtn = {
@@ -523,19 +560,21 @@ const completeBtn = {
 };
 
 const clearBtn = {
+  flex: "1 1 150px",
   backgroundColor: "#111827",
   color: "white",
   border: "none",
-  padding: "10px 16px",
+  padding: "12px 16px",
   borderRadius: "8px",
   cursor: "pointer",
 };
 
 const exportBtn = {
+  flex: "1 1 150px",
   backgroundColor: "#16a34a",
   color: "white",
   border: "none",
-  padding: "10px 16px",
+  padding: "12px 16px",
   borderRadius: "8px",
   cursor: "pointer",
 };
