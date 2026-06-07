@@ -308,6 +308,7 @@ const vehicleGrid = {
   display: "grid",
   gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
   gap: "20px",
+  alignItems: "start",
 };
 
 const cardStyle = {
