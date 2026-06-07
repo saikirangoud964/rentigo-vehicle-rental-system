@@ -72,13 +72,14 @@ function ManageVehicles() {
   });
 
   if (loading) {
-    return <h2 style={{ padding: "30px" }}>Loading vehicles...</h2>;
+    return <h2 style={loadingStyle}>Loading vehicles...</h2>;
   }
 
   return (
     <div style={pageStyle}>
-      <h1>🚗 Manage Vehicles</h1>
-      <p style={{ color: "#6b7280", marginBottom: "25px" }}>
+      <h1 style={titleStyle}>🚗 Manage Vehicles</h1>
+
+      <p style={subtitleStyle}>
         View, search, edit and delete vehicles from the system.
       </p>
 
@@ -134,7 +135,7 @@ function ManageVehicles() {
           <option value="4W">4 Wheeler</option>
         </select>
 
-        <Link to="/admin/add-vehicle">
+        <Link to="/admin/add-vehicle" style={linkStyle}>
           <button style={addBtn}>+ Add Vehicle</button>
         </Link>
       </div>
@@ -154,20 +155,24 @@ function ManageVehicles() {
                 }
                 alt={vehicle.name}
                 style={imageStyle}
+                onError={(e) => {
+                  e.target.src =
+                    "https://via.placeholder.com/400x250?text=Vehicle";
+                }}
               />
 
-              <div style={{ padding: "15px" }}>
-                <h3>{vehicle.name}</h3>
+              <div style={contentStyle}>
+                <h3 style={vehicleNameStyle}>{vehicle.name}</h3>
 
-                <p style={{ color: "#666" }}>
+                <p style={vehicleBrandStyle}>
                   {vehicle.brand} {vehicle.model}
                 </p>
 
-                <p>
+                <p style={infoTextStyle}>
                   <strong>Vehicle No:</strong> {vehicle.vehicleNumber}
                 </p>
 
-                <p>
+                <p style={priceTextStyle}>
                   <strong>₹{vehicle.pricePerDay}</strong>/day
                 </p>
 
@@ -191,8 +196,11 @@ function ManageVehicles() {
                   {vehicle.available === false ? "Unavailable" : "Available"}
                 </span>
 
-                <div style={{ marginTop: "15px" }}>
-                  <Link to={`/admin/edit-vehicle/${vehicle._id}`}>
+                <div style={actionBox}>
+                  <Link
+                    to={`/admin/edit-vehicle/${vehicle._id}`}
+                    style={linkStyle}
+                  >
                     <button style={editBtn}>Edit Vehicle</button>
                   </Link>
 
@@ -212,15 +220,33 @@ function ManageVehicles() {
   );
 }
 
-const pageStyle = {
+const loadingStyle = {
   padding: "30px",
+  textAlign: "center",
+};
+
+const pageStyle = {
+  padding: "clamp(16px, 4vw, 30px)",
   backgroundColor: "#f9fafb",
   minHeight: "100vh",
+  boxSizing: "border-box",
+};
+
+const titleStyle = {
+  fontSize: "clamp(30px, 5vw, 42px)",
+  color: "#111827",
+  marginBottom: "8px",
+};
+
+const subtitleStyle = {
+  color: "#6b7280",
+  marginBottom: "25px",
+  fontSize: "clamp(15px, 2vw, 17px)",
 };
 
 const statsContainer = {
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+  gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
   gap: "15px",
   marginTop: "20px",
   marginBottom: "25px",
@@ -239,20 +265,27 @@ const filterBox = {
   gap: "12px",
   flexWrap: "wrap",
   marginBottom: "25px",
+  background: "#fff",
+  padding: "18px",
+  borderRadius: "12px",
+  boxShadow: "0 4px 10px rgba(0,0,0,0.05)",
 };
 
 const searchInput = {
+  flex: "2 1 260px",
   width: "100%",
-  maxWidth: "480px",
   padding: "12px",
   borderRadius: "10px",
   border: "1px solid #ddd",
+  boxSizing: "border-box",
 };
 
 const selectInput = {
+  flex: "1 1 180px",
   padding: "12px",
   borderRadius: "10px",
   border: "1px solid #ddd",
+  boxSizing: "border-box",
 };
 
 const addBtn = {
@@ -262,11 +295,18 @@ const addBtn = {
   padding: "12px 16px",
   borderRadius: "10px",
   cursor: "pointer",
+  width: "100%",
+  fontWeight: "600",
+};
+
+const linkStyle = {
+  textDecoration: "none",
+  flex: "1 1 160px",
 };
 
 const vehicleGrid = {
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+  gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
   gap: "20px",
 };
 
@@ -275,12 +315,38 @@ const cardStyle = {
   borderRadius: "14px",
   overflow: "hidden",
   boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+  border: "1px solid #e5e7eb",
 };
 
 const imageStyle = {
   width: "100%",
-  height: "220px",
+  height: "clamp(190px, 25vw, 230px)",
   objectFit: "cover",
+};
+
+const contentStyle = {
+  padding: "18px",
+};
+
+const vehicleNameStyle = {
+  marginTop: 0,
+  marginBottom: "8px",
+  fontSize: "clamp(21px, 3vw, 26px)",
+  color: "#111827",
+};
+
+const vehicleBrandStyle = {
+  color: "#666",
+  marginBottom: "12px",
+};
+
+const infoTextStyle = {
+  color: "#374151",
+};
+
+const priceTextStyle = {
+  color: "#2563eb",
+  fontSize: "18px",
 };
 
 const badgeBox = {
@@ -305,27 +371,36 @@ const statusBadge = {
   borderRadius: "20px",
   fontSize: "13px",
   fontWeight: "bold",
+  display: "inline-block",
+};
+
+const actionBox = {
+  marginTop: "15px",
+  display: "flex",
+  flexDirection: "column",
+  gap: "10px",
 };
 
 const editBtn = {
   background: "#2563eb",
   color: "#fff",
   border: "none",
-  padding: "10px 15px",
+  padding: "11px 15px",
   borderRadius: "8px",
   cursor: "pointer",
   width: "100%",
-  marginBottom: "10px",
+  fontWeight: "600",
 };
 
 const deleteBtn = {
   background: "#dc2626",
   color: "#fff",
   border: "none",
-  padding: "10px 15px",
+  padding: "11px 15px",
   borderRadius: "8px",
   cursor: "pointer",
   width: "100%",
+  fontWeight: "600",
 };
 
 const emptyCard = {
