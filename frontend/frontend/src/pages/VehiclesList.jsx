@@ -20,6 +20,7 @@ function VehiclesList() {
       const { data } = await axios.get(
         "https://rentigo-vehicle-rental-system.onrender.com/api/vehicles",
       );
+
       setVehicles(data.vehicles || data.data || data || []);
     } catch (error) {
       console.error("FETCH VEHICLES ERROR:", error);
@@ -48,8 +49,13 @@ function VehiclesList() {
   });
 
   return (
-    <div style={{ padding: "40px" }}>
-      <h1 style={{ textAlign: "center" }}>Available Vehicles</h1>
+    <div style={pageStyle}>
+      <div style={headerStyle}>
+        <h1 style={titleStyle}>Available Vehicles</h1>
+        <p style={subtitleStyle}>
+          Search and choose from bikes, scooters, cars and SUVs.
+        </p>
+      </div>
 
       <div style={filterBox}>
         <input
@@ -95,7 +101,10 @@ function VehiclesList() {
       </div>
 
       {filteredVehicles.length === 0 ? (
-        <p style={{ textAlign: "center" }}>No vehicles found</p>
+        <div style={emptyBox}>
+          <h2>No vehicles found</h2>
+          <p>Try changing your search or filters.</p>
+        </div>
       ) : (
         <div style={gridStyle}>
           {filteredVehicles.map((vehicle) => (
@@ -114,9 +123,9 @@ function VehiclesList() {
                 style={imageStyle}
               />
 
-              <div style={{ padding: "20px" }}>
+              <div style={contentStyle}>
                 <div style={topRow}>
-                  <h3>{vehicle.name}</h3>
+                  <h3 style={vehicleNameStyle}>{vehicle.name}</h3>
 
                   <span
                     style={{
@@ -128,11 +137,19 @@ function VehiclesList() {
                   </span>
                 </div>
 
-                <p>{vehicle.brand}</p>
-                <p>Type: {vehicle.type}</p>
-                <p>Fuel: {vehicle.fuelType}</p>
+                <p style={brandStyle}>{vehicle.brand}</p>
 
-                <h3 style={{ color: "#2563eb" }}>₹{vehicle.pricePerDay}/day</h3>
+                <div style={infoGrid}>
+                  <p>
+                    <strong>Type:</strong>{" "}
+                    {vehicle.type === "2W" ? "2 Wheeler" : "4 Wheeler"}
+                  </p>
+                  <p>
+                    <strong>Fuel:</strong> {vehicle.fuelType}
+                  </p>
+                </div>
+
+                <h3 style={priceStyle}>₹{vehicle.pricePerDay}/day</h3>
 
                 <button
                   onClick={() => navigate(`/vehicles/${vehicle._id}`)}
@@ -154,24 +171,50 @@ function VehiclesList() {
   );
 }
 
+const pageStyle = {
+  padding: "clamp(16px, 4vw, 40px)",
+  background: "#f9fafb",
+  minHeight: "80vh",
+  boxSizing: "border-box",
+};
+
+const headerStyle = {
+  textAlign: "center",
+  marginBottom: "25px",
+};
+
+const titleStyle = {
+  fontSize: "clamp(30px, 5vw, 44px)",
+  color: "#111827",
+  marginBottom: "8px",
+};
+
+const subtitleStyle = {
+  color: "#6b7280",
+  fontSize: "clamp(15px, 2vw, 18px)",
+};
+
 const filterBox = {
-  display: "flex",
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))",
   gap: "15px",
-  flexWrap: "wrap",
-  margin: "30px 0",
-  justifyContent: "center",
+  margin: "30px auto",
+  maxWidth: "1100px",
 };
 
 const inputStyle = {
+  width: "100%",
   padding: "12px",
   border: "1px solid #ccc",
   borderRadius: "8px",
-  minWidth: "200px",
+  fontSize: "15px",
+  boxSizing: "border-box",
+  background: "#fff",
 };
 
 const gridStyle = {
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))",
+  gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
   gap: "25px",
   marginTop: "30px",
 };
@@ -181,19 +224,42 @@ const cardStyle = {
   borderRadius: "15px",
   overflow: "hidden",
   boxShadow: "0 2px 12px rgba(0,0,0,0.1)",
+  border: "1px solid #e5e7eb",
 };
 
 const imageStyle = {
   width: "100%",
-  height: "220px",
+  height: "clamp(190px, 25vw, 240px)",
   objectFit: "cover",
+};
+
+const contentStyle = {
+  padding: "20px",
 };
 
 const topRow = {
   display: "flex",
   justifyContent: "space-between",
   gap: "10px",
-  alignItems: "center",
+  alignItems: "flex-start",
+  flexWrap: "wrap",
+};
+
+const vehicleNameStyle = {
+  margin: 0,
+  fontSize: "clamp(20px, 3vw, 24px)",
+};
+
+const brandStyle = {
+  color: "#6b7280",
+  marginTop: "8px",
+};
+
+const infoGrid = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))",
+  gap: "8px",
+  color: "#374151",
 };
 
 const badgeStyle = {
@@ -201,13 +267,29 @@ const badgeStyle = {
   padding: "5px 10px",
   borderRadius: "20px",
   fontSize: "12px",
+  fontWeight: "600",
+};
+
+const priceStyle = {
+  color: "#2563eb",
+  fontSize: "22px",
 };
 
 const buttonStyle = {
+  width: "100%",
   color: "#fff",
   border: "none",
-  padding: "10px 15px",
+  padding: "12px 15px",
   borderRadius: "8px",
+  fontWeight: "600",
+};
+
+const emptyBox = {
+  background: "#fff",
+  padding: "35px",
+  textAlign: "center",
+  borderRadius: "16px",
+  boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
 };
 
 export default VehiclesList;
