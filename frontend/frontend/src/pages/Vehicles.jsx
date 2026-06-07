@@ -218,8 +218,10 @@ function Vehicles() {
         <div style={cardStyle}>
           <div style={titleRow}>
             <div>
-              <h1 style={{ marginBottom: "5px" }}>{vehicle.name}</h1>
-              <h3 style={{ color: "#6b7280" }}>{vehicle.brand}</h3>
+              <h1 style={vehicleTitleStyle}>{vehicle.name}</h1>
+              <h3 style={{ color: "#6b7280", marginTop: 0 }}>
+                {vehicle.brand}
+              </h3>
             </div>
 
             <span
@@ -301,7 +303,7 @@ function Vehicles() {
 
           <h3>Booking Details</h3>
 
-          <div style={{ display: "grid", gap: "15px" }}>
+          <div style={bookingGrid}>
             <div>
               <label>Pickup Date</label>
               <input
@@ -381,7 +383,8 @@ function Vehicles() {
 const pageStyle = {
   maxWidth: "1200px",
   margin: "auto",
-  padding: "30px",
+  padding: "clamp(15px, 4vw, 30px)",
+  boxSizing: "border-box",
 };
 
 const backBtn = {
@@ -396,14 +399,16 @@ const backBtn = {
 
 const layoutStyle = {
   display: "grid",
-  gridTemplateColumns: "1.2fr 1fr",
+  gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
   gap: "30px",
   alignItems: "start",
 };
 
 const imageStyle = {
   width: "100%",
-  height: "450px",
+  height: "auto",
+  minHeight: "240px",
+  maxHeight: "450px",
   objectFit: "cover",
   borderRadius: "15px",
   boxShadow: "0 4px 14px rgba(0,0,0,0.12)",
@@ -412,7 +417,7 @@ const imageStyle = {
 const infoBox = {
   background: "#fff",
   marginTop: "20px",
-  padding: "22px",
+  padding: "clamp(18px, 3vw, 22px)",
   borderRadius: "15px",
   boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
 };
@@ -424,9 +429,11 @@ const descriptionStyle = {
 
 const cardStyle = {
   background: "#fff",
-  padding: "25px",
+  padding: "clamp(18px, 3vw, 25px)",
   borderRadius: "15px",
   boxShadow: "0 2px 12px rgba(0,0,0,0.1)",
+  width: "100%",
+  boxSizing: "border-box",
 };
 
 const titleRow = {
@@ -434,6 +441,13 @@ const titleRow = {
   justifyContent: "space-between",
   gap: "12px",
   alignItems: "flex-start",
+  flexWrap: "wrap",
+};
+
+const vehicleTitleStyle = {
+  marginBottom: "5px",
+  fontSize: "clamp(28px, 4vw, 40px)",
+  lineHeight: "1.2",
 };
 
 const availabilityBadge = {
@@ -473,17 +487,9 @@ const priceStyle = {
   marginTop: "18px",
 };
 
-const inputStyle = {
-  width: "100%",
-  padding: "10px",
-  marginTop: "6px",
-  border: "1px solid #ccc",
-  borderRadius: "8px",
-};
-
 const calendarGrid = {
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(90px, 1fr))",
+  gridTemplateColumns: "repeat(auto-fit, minmax(80px, 1fr))",
   gap: "10px",
   marginTop: "15px",
   marginBottom: "20px",
@@ -493,6 +499,21 @@ const dateBox = {
   padding: "10px",
   borderRadius: "10px",
   textAlign: "center",
+};
+
+const bookingGrid = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+  gap: "15px",
+};
+
+const inputStyle = {
+  width: "100%",
+  padding: "10px",
+  marginTop: "6px",
+  border: "1px solid #ccc",
+  borderRadius: "8px",
+  boxSizing: "border-box",
 };
 
 const summaryBox = {
