@@ -77,13 +77,8 @@ function Login() {
 
         <div style={statsGrid}>
           <div style={statCard}>
-            <h2 style={statNumber}>500+</h2>
+            <h2 style={statNumber}>100+</h2>
             <p style={statText}>Vehicles</p>
-          </div>
-
-          <div style={statCard}>
-            <h2 style={statNumber}>10K+</h2>
-            <p style={statText}>Bookings</p>
           </div>
 
           <div style={statCard}>
