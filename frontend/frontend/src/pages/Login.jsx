@@ -77,23 +77,23 @@ function Login() {
 
         <div style={statsGrid}>
           <div style={statCard}>
-            <h2>50+</h2>
-            <p>Vehicles</p>
+            <h2 style={statNumber}>500+</h2>
+            <p style={statText}>Vehicles</p>
           </div>
 
           <div style={statCard}>
-            <h2>1K+</h2>
-            <p>Bookings</p>
+            <h2 style={statNumber}>10K+</h2>
+            <p style={statText}>Bookings</p>
           </div>
 
           <div style={statCard}>
-            <h2>4.9★</h2>
-            <p>Rating</p>
+            <h2 style={statNumber}>4.9★</h2>
+            <p style={statText}>Rating</p>
           </div>
 
           <div style={statCard}>
-            <h2>24/7</h2>
-            <p>Support</p>
+            <h2 style={statNumber}>24/7</h2>
+            <p style={statText}>Support</p>
           </div>
         </div>
       </div>
@@ -164,16 +164,19 @@ function Login() {
 const pageStyle = {
   minHeight: "calc(100vh - 70px)",
   display: "grid",
-  gridTemplateColumns: "1.1fr 0.9fr",
-  gap: "35px",
+  gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+  gap: "clamp(24px, 5vw, 45px)",
   alignItems: "center",
-  padding: "35px 60px",
+  padding: "clamp(22px, 5vw, 55px)",
   background: "linear-gradient(135deg, #020617, #0f172a 45%, #1e3a8a)",
   boxSizing: "border-box",
+  overflowX: "hidden",
 };
 
 const leftBoxStyle = {
   color: "#fff",
+  width: "100%",
+  maxWidth: "650px",
 };
 
 const badgeStyle = {
@@ -185,10 +188,11 @@ const badgeStyle = {
   borderRadius: "999px",
   fontWeight: "700",
   marginBottom: "18px",
+  fontSize: "clamp(13px, 2vw, 15px)",
 };
 
 const heroTitle = {
-  fontSize: "clamp(38px, 5vw, 62px)",
+  fontSize: "clamp(34px, 7vw, 62px)",
   color: "#fff",
   marginBottom: "16px",
   lineHeight: "1.05",
@@ -199,7 +203,7 @@ const highlightText = {
 };
 
 const heroText = {
-  fontSize: "18px",
+  fontSize: "clamp(15px, 2vw, 18px)",
   color: "#cbd5e1",
   lineHeight: "1.6",
   maxWidth: "620px",
@@ -207,26 +211,36 @@ const heroText = {
 
 const statsGrid = {
   display: "grid",
-  gridTemplateColumns: "repeat(2, 1fr)",
-  gap: "16px",
-  marginTop: "30px",
+  gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))",
+  gap: "14px",
+  marginTop: "28px",
   maxWidth: "560px",
 };
 
 const statCard = {
   background: "rgba(255,255,255,0.1)",
   border: "1px solid rgba(255,255,255,0.18)",
-  padding: "20px",
+  padding: "clamp(14px, 3vw, 20px)",
   borderRadius: "18px",
   textAlign: "center",
   boxShadow: "0 12px 30px rgba(0,0,0,0.18)",
+};
+
+const statNumber = {
+  margin: 0,
+  fontSize: "clamp(22px, 4vw, 30px)",
+};
+
+const statText = {
+  marginBottom: 0,
+  color: "#cbd5e1",
 };
 
 const cardStyle = {
   width: "100%",
   maxWidth: "460px",
   background: "rgba(255,255,255,0.96)",
-  padding: "34px",
+  padding: "clamp(24px, 4vw, 34px)",
   borderRadius: "26px",
   boxShadow: "0 25px 70px rgba(0,0,0,0.35)",
   justifySelf: "center",
@@ -234,21 +248,21 @@ const cardStyle = {
 };
 
 const iconStyle = {
-  width: "60px",
-  height: "60px",
+  width: "clamp(50px, 8vw, 60px)",
+  height: "clamp(50px, 8vw, 60px)",
   borderRadius: "18px",
   background: "linear-gradient(135deg, #2563eb, #06b6d4)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  fontSize: "28px",
+  fontSize: "clamp(24px, 4vw, 28px)",
   margin: "0 auto 15px",
   color: "#fff",
 };
 
 const titleStyle = {
   textAlign: "center",
-  fontSize: "32px",
+  fontSize: "clamp(28px, 5vw, 32px)",
   marginBottom: "8px",
   color: "#111827",
 };
@@ -303,6 +317,7 @@ const showBtnStyle = {
   background: "#e5e7eb",
   cursor: "pointer",
   fontWeight: "700",
+  whiteSpace: "nowrap",
 };
 
 const forgotContainerStyle = {
