@@ -198,9 +198,16 @@ const heroSectionStyle = {
   gap: "40px",
   alignItems: "center",
   padding: "clamp(25px, 5vw, 60px)",
-  background: "#eef7f7",
+  background: "transparent",
 };
-
+const pageStyle = {
+  minHeight: "100vh",
+  background: `
+    radial-gradient(circle at top left, #60a5fa33, transparent 30%),
+    radial-gradient(circle at bottom right, #2563eb33, transparent 30%),
+    linear-gradient(135deg, #f8fafc, #e0f2fe)
+  `,
+};
 const heroContentStyle = {
   width: "100%",
 };
