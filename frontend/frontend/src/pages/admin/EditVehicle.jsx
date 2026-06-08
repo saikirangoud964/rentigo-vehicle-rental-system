@@ -132,8 +132,9 @@ function EditVehicle() {
 
   return (
     <div style={pageStyle}>
-      <h1>Edit Vehicle</h1>
-      <p style={{ color: "#6b7280", marginBottom: "25px" }}>
+      <h1 style={titleStyle}>Edit Vehicle</h1>
+
+      <p style={subtitleStyle}>
         Update vehicle details, price, availability and image.
       </p>
 
@@ -243,7 +244,7 @@ function EditVehicle() {
         </form>
 
         <div style={previewCard}>
-          <h3>Vehicle Preview</h3>
+          <h3 style={previewTitleStyle}>Vehicle Preview</h3>
 
           <img
             src={
@@ -254,8 +255,9 @@ function EditVehicle() {
             style={previewImage}
           />
 
-          <h2>{vehicle.name || "Vehicle Name"}</h2>
-          <p>
+          <h2 style={vehicleNameStyle}>{vehicle.name || "Vehicle Name"}</h2>
+
+          <p style={brandStyle}>
             {vehicle.brand || "Brand"} {vehicle.model || ""}
           </p>
 
@@ -263,8 +265,11 @@ function EditVehicle() {
             <span style={badge}>
               {vehicle.type === "2W" ? "2 Wheeler" : "4 Wheeler"}
             </span>
+
             <span style={badge}>{vehicle.fuelType}</span>
+
             <span style={badge}>{vehicle.transmission}</span>
+
             <span
               style={{
                 ...badge,
@@ -276,7 +281,7 @@ function EditVehicle() {
             </span>
           </div>
 
-          <h2 style={{ color: "#2563eb" }}>₹{vehicle.pricePerDay || 0}/day</h2>
+          <h2 style={priceStyle}>₹{vehicle.pricePerDay || 0}/day</h2>
         </div>
       </div>
     </div>
@@ -284,14 +289,27 @@ function EditVehicle() {
 }
 
 const pageStyle = {
-  padding: "30px",
+  padding: "clamp(16px, 4vw, 30px)",
   background: "#f9fafb",
   minHeight: "100vh",
+  boxSizing: "border-box",
+};
+
+const titleStyle = {
+  fontSize: "clamp(30px, 5vw, 42px)",
+  color: "#111827",
+  marginBottom: "8px",
+};
+
+const subtitleStyle = {
+  color: "#6b7280",
+  marginBottom: "25px",
+  fontSize: "clamp(15px, 2vw, 17px)",
 };
 
 const layoutStyle = {
   display: "grid",
-  gridTemplateColumns: "1fr 1fr",
+  gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
   gap: "30px",
   alignItems: "start",
 };
@@ -301,15 +319,19 @@ const formStyle = {
   flexDirection: "column",
   gap: "15px",
   background: "#fff",
-  padding: "25px",
+  padding: "clamp(18px, 3vw, 25px)",
   borderRadius: "16px",
   boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+  boxSizing: "border-box",
 };
 
 const inputStyle = {
+  width: "100%",
   padding: "12px",
   border: "1px solid #ccc",
   borderRadius: "8px",
+  fontSize: "15px",
+  boxSizing: "border-box",
 };
 
 const checkboxBox = {
@@ -319,31 +341,50 @@ const checkboxBox = {
   background: "#f3f4f6",
   padding: "12px",
   borderRadius: "8px",
+  flexWrap: "wrap",
 };
 
 const buttonStyle = {
-  padding: "12px",
+  padding: "13px",
   background: "#2563eb",
   color: "white",
   border: "none",
   borderRadius: "8px",
   cursor: "pointer",
   fontWeight: "bold",
+  fontSize: "15px",
 };
 
 const previewCard = {
   background: "#fff",
-  padding: "25px",
+  padding: "clamp(18px, 3vw, 25px)",
   borderRadius: "16px",
   boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+  boxSizing: "border-box",
+};
+
+const previewTitleStyle = {
+  marginTop: 0,
 };
 
 const previewImage = {
   width: "100%",
-  height: "300px",
+  height: "clamp(220px, 35vw, 300px)",
   objectFit: "cover",
   borderRadius: "14px",
   marginBottom: "15px",
+};
+
+const vehicleNameStyle = {
+  fontSize: "clamp(24px, 4vw, 32px)",
+  marginBottom: "8px",
+  color: "#111827",
+  wordBreak: "break-word",
+};
+
+const brandStyle = {
+  color: "#6b7280",
+  wordBreak: "break-word",
 };
 
 const badgeBox = {
@@ -360,6 +401,11 @@ const badge = {
   borderRadius: "20px",
   fontSize: "13px",
   fontWeight: "600",
+};
+
+const priceStyle = {
+  color: "#2563eb",
+  fontSize: "clamp(24px, 4vw, 32px)",
 };
 
 export default EditVehicle;
