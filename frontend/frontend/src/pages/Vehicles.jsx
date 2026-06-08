@@ -230,7 +230,7 @@ function Vehicles() {
 
   if (!vehicle) {
     return (
-      <div style={{ textAlign: "center", marginTop: "50px" }}>
+      <div style={loadingStyle}>
         <h2>Loading vehicle details...</h2>
       </div>
     );
@@ -238,206 +238,230 @@ function Vehicles() {
 
   return (
     <div style={pageStyle}>
-      <button onClick={() => navigate(-1)} style={backBtn}>
-        ← Back
-      </button>
+      <div style={containerStyle}>
+        <button onClick={() => navigate(-1)} style={backBtn}>
+          ← Back
+        </button>
 
-      <div style={layoutStyle}>
-        <div>
-          <img
-            src={
-              vehicle.image?.startsWith("http")
-                ? vehicle.image
-                : "https://via.placeholder.com/900x450?text=Vehicle"
-            }
-            alt={vehicle.name}
-            onError={(e) => {
-              e.target.src = "https://via.placeholder.com/900x450?text=Vehicle";
-            }}
-            style={imageStyle}
-          />
+        <div style={layoutStyle}>
+          <div>
+            <img
+              src={
+                vehicle.image?.startsWith("http")
+                  ? vehicle.image
+                  : "https://via.placeholder.com/900x450?text=Vehicle"
+              }
+              alt={vehicle.name}
+              onError={(e) => {
+                e.target.src =
+                  "https://via.placeholder.com/900x450?text=Vehicle";
+              }}
+              style={imageStyle}
+            />
 
-          <div style={infoBox}>
-            <h2>About this vehicle</h2>
-            <p style={descriptionStyle}>
-              {vehicle.description ||
-                "Well maintained rental vehicle with excellent comfort, safety, and performance. Ideal for city rides, trips, and daily travel."}
-            </p>
+            <div style={infoBox}>
+              <h2>About this vehicle</h2>
+              <p style={descriptionStyle}>
+                {vehicle.description ||
+                  "Well maintained rental vehicle with excellent comfort, safety, and performance. Ideal for city rides, trips, and daily travel."}
+              </p>
+            </div>
           </div>
-        </div>
 
-        <div style={cardStyle}>
-          <div style={titleRow}>
-            <div>
-              <h1 style={vehicleTitleStyle}>{vehicle.name}</h1>
-              <h3 style={{ color: "#6b7280", marginTop: 0 }}>
-                {vehicle.brand}
-              </h3>
+          <div style={cardStyle}>
+            <div style={titleRow}>
+              <div>
+                <h1 style={vehicleTitleStyle}>{vehicle.name}</h1>
+                <h3 style={brandStyle}>{vehicle.brand}</h3>
+              </div>
+
+              <span
+                style={{
+                  ...availabilityBadge,
+                  background: vehicle.available ? "#16a34a" : "#dc2626",
+                }}
+              >
+                {vehicle.available ? "Available" : "Booked"}
+              </span>
             </div>
 
-            <span
-              style={{
-                ...availabilityBadge,
-                background: vehicle.available ? "#16a34a" : "#dc2626",
-              }}
-            >
-              {vehicle.available ? "Available" : "Booked"}
-            </span>
-          </div>
+            <div style={featureGrid}>
+              <span style={featureBadge}>🚗 Self Drive</span>
+              <span style={featureBadge}>⛽ {vehicle.fuelType}</span>
+              <span style={featureBadge}>⚙️ {vehicle.transmission}</span>
+              <span style={featureBadge}>
+                {vehicle.type === "2W" ? "🏍️ 2 Wheeler" : "🚘 4 Wheeler"}
+              </span>
+            </div>
 
-          <div style={featureGrid}>
-            <span style={featureBadge}>🚗 Self Drive</span>
-            <span style={featureBadge}>⛽ {vehicle.fuelType}</span>
-            <span style={featureBadge}>⚙️ {vehicle.transmission}</span>
-            <span style={featureBadge}>
-              {vehicle.type === "2W" ? "🏍️ 2 Wheeler" : "🚘 4 Wheeler"}
-            </span>
-          </div>
+            <div style={detailBox}>
+              <p>
+                <strong>Vehicle Number:</strong> {vehicle.vehicleNumber}
+              </p>
+              <p>
+                <strong>Type:</strong>{" "}
+                {vehicle.type === "2W" ? "2 Wheeler" : "4 Wheeler"}
+              </p>
+              <p>
+                <strong>Fuel Type:</strong> {vehicle.fuelType}
+              </p>
+              <p>
+                <strong>Transmission:</strong> {vehicle.transmission}
+              </p>
+            </div>
 
-          <div style={detailBox}>
-            <p>
-              <strong>Vehicle Number:</strong> {vehicle.vehicleNumber}
-            </p>
-            <p>
-              <strong>Type:</strong>{" "}
-              {vehicle.type === "2W" ? "2 Wheeler" : "4 Wheeler"}
-            </p>
-            <p>
-              <strong>Fuel Type:</strong> {vehicle.fuelType}
-            </p>
-            <p>
-              <strong>Transmission:</strong> {vehicle.transmission}
-            </p>
-          </div>
+            <h2 style={priceStyle}>₹{vehicle.pricePerDay}/day</h2>
 
-          <h2 style={priceStyle}>₹{vehicle.pricePerDay}/day</h2>
+            <hr style={dividerStyle} />
 
-          <hr />
+            <h3>Availability Calendar</h3>
 
-          <h3>Availability Calendar</h3>
+            <div style={calendarGrid}>
+              {getNext14Days().map((date) => {
+                const booked = isDateBooked(date);
 
-          <div style={calendarGrid}>
-            {getNext14Days().map((date) => {
-              const booked = isDateBooked(date);
-
-              return (
-                <div
-                  key={date.toISOString()}
-                  style={{
-                    ...dateBox,
-                    background: booked ? "#fee2e2" : "#dcfce7",
-                    border: booked ? "1px solid #ef4444" : "1px solid #22c55e",
-                  }}
-                >
-                  <strong>
-                    {date.toLocaleDateString("en-IN", {
-                      day: "numeric",
-                      month: "short",
-                    })}
-                  </strong>
-                  <br />
-                  <span
+                return (
+                  <div
+                    key={date.toISOString()}
                     style={{
-                      color: booked ? "#dc2626" : "#16a34a",
-                      fontSize: "12px",
-                      fontWeight: "bold",
+                      ...dateBox,
+                      background: booked ? "#fee2e2" : "#dcfce7",
+                      border: booked
+                        ? "1px solid #ef4444"
+                        : "1px solid #22c55e",
                     }}
                   >
-                    {booked ? "Booked" : "Available"}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-
-          <hr />
-
-          <h3>Booking Details</h3>
-
-          <div style={bookingGrid}>
-            <div>
-              <label>Pickup Date</label>
-              <input
-                type="date"
-                value={pickupDate}
-                min={new Date().toISOString().split("T")[0]}
-                onChange={(e) => setPickupDate(e.target.value)}
-                style={inputStyle}
-              />
+                    <strong>
+                      {date.toLocaleDateString("en-IN", {
+                        day: "numeric",
+                        month: "short",
+                      })}
+                    </strong>
+                    <br />
+                    <span
+                      style={{
+                        color: booked ? "#dc2626" : "#16a34a",
+                        fontSize: "12px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {booked ? "Booked" : "Available"}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
 
-            <div>
-              <label>Return Date</label>
-              <input
-                type="date"
-                value={returnDate}
-                min={pickupDate || new Date().toISOString().split("T")[0]}
-                onChange={(e) => setReturnDate(e.target.value)}
-                style={inputStyle}
-              />
-            </div>
-          </div>
+            <hr style={dividerStyle} />
 
-          {pickupDate && returnDate && (
-            <div
+            <h3>Booking Details</h3>
+
+            <div style={bookingGrid}>
+              <div>
+                <label>Pickup Date</label>
+                <input
+                  type="date"
+                  value={pickupDate}
+                  min={new Date().toISOString().split("T")[0]}
+                  onChange={(e) => setPickupDate(e.target.value)}
+                  style={inputStyle}
+                />
+              </div>
+
+              <div>
+                <label>Return Date</label>
+                <input
+                  type="date"
+                  value={returnDate}
+                  min={pickupDate || new Date().toISOString().split("T")[0]}
+                  onChange={(e) => setReturnDate(e.target.value)}
+                  style={inputStyle}
+                />
+              </div>
+            </div>
+
+            {pickupDate && returnDate && (
+              <div
+                style={{
+                  ...summaryBox,
+                  background: selectedRangeBooked
+                    ? "#fee2e2"
+                    : "linear-gradient(135deg,#eff6ff,#dbeafe)",
+                  border: selectedRangeBooked
+                    ? "1px solid #ef4444"
+                    : "1px solid #93c5fd",
+                }}
+              >
+                <p>
+                  <strong>Total Days:</strong> {totalDays}
+                </p>
+
+                <p>
+                  <strong>Total Price:</strong>
+                  <span style={totalPriceText}> ₹{totalPrice}</span>
+                </p>
+
+                <p>
+                  <strong>Payment Mode:</strong> Razorpay
+                </p>
+
+                {selectedRangeBooked && (
+                  <p style={{ color: "#dc2626", fontWeight: "bold" }}>
+                    ❌ Selected dates include booked dates.
+                  </p>
+                )}
+              </div>
+            )}
+
+            <button
+              onClick={handleBooking}
+              disabled={!vehicle.available || selectedRangeBooked || paying}
               style={{
-                ...summaryBox,
-                background: selectedRangeBooked ? "#fee2e2" : "#f3f4f6",
+                ...bookBtn,
+                background:
+                  vehicle.available && !selectedRangeBooked
+                    ? "linear-gradient(135deg,#2563eb,#111827)"
+                    : "#999",
+                cursor:
+                  vehicle.available && !selectedRangeBooked && !paying
+                    ? "pointer"
+                    : "not-allowed",
               }}
             >
-              <p>
-                <strong>Total Days:</strong> {totalDays}
-              </p>
-
-              <p>
-                <strong>Total Price:</strong>
-                <span style={totalPriceText}> ₹{totalPrice}</span>
-              </p>
-
-              <p>
-                <strong>Payment Mode:</strong> Razorpay
-              </p>
-
-              {selectedRangeBooked && (
-                <p style={{ color: "#dc2626", fontWeight: "bold" }}>
-                  ❌ Selected dates include booked dates.
-                </p>
-              )}
-            </div>
-          )}
-
-          <button
-            onClick={handleBooking}
-            disabled={!vehicle.available || selectedRangeBooked || paying}
-            style={{
-              ...bookBtn,
-              background:
-                vehicle.available && !selectedRangeBooked ? "#2563eb" : "#999",
-              cursor:
-                vehicle.available && !selectedRangeBooked && !paying
-                  ? "pointer"
-                  : "not-allowed",
-            }}
-          >
-            {paying
-              ? "Opening Payment..."
-              : vehicle.available
-                ? selectedRangeBooked
-                  ? "❌ Dates Not Available"
-                  : `💳 Pay ₹${totalPrice || vehicle.pricePerDay} & Book`
-                : "🚫 Not Available"}
-          </button>
+              {paying
+                ? "Opening Payment..."
+                : vehicle.available
+                  ? selectedRangeBooked
+                    ? "❌ Dates Not Available"
+                    : `💳 Pay ₹${totalPrice || vehicle.pricePerDay} & Book`
+                  : "🚫 Not Available"}
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
+const loadingStyle = {
+  textAlign: "center",
+  marginTop: "50px",
+};
+
 const pageStyle = {
-  maxWidth: "1200px",
-  margin: "auto",
+  minHeight: "100vh",
+  background: `
+    radial-gradient(circle at top left, #60a5fa33, transparent 30%),
+    radial-gradient(circle at bottom right, #2563eb33, transparent 30%),
+    linear-gradient(135deg, #f8fafc, #e0f2fe)
+  `,
   padding: "clamp(15px, 4vw, 30px)",
   boxSizing: "border-box",
+};
+
+const containerStyle = {
+  maxWidth: "1200px",
+  margin: "auto",
 };
 
 const backBtn = {
@@ -463,16 +487,16 @@ const imageStyle = {
   minHeight: "240px",
   maxHeight: "450px",
   objectFit: "cover",
-  borderRadius: "15px",
-  boxShadow: "0 4px 14px rgba(0,0,0,0.12)",
+  borderRadius: "20px",
+  boxShadow: "0 15px 40px rgba(37,99,235,0.18)",
 };
 
 const infoBox = {
-  background: "#fff",
+  background: "#ffffff",
   marginTop: "20px",
-  padding: "clamp(18px, 3vw, 22px)",
-  borderRadius: "15px",
-  boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
+  padding: "24px",
+  borderRadius: "20px",
+  boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
 };
 
 const descriptionStyle = {
@@ -481,12 +505,14 @@ const descriptionStyle = {
 };
 
 const cardStyle = {
-  background: "#fff",
+  background: "rgba(255,255,255,0.95)",
+  backdropFilter: "blur(12px)",
   padding: "clamp(18px, 3vw, 25px)",
-  borderRadius: "15px",
-  boxShadow: "0 2px 12px rgba(0,0,0,0.1)",
+  borderRadius: "20px",
+  boxShadow: "0 15px 40px rgba(37,99,235,0.15)",
   width: "100%",
   boxSizing: "border-box",
+  border: "1px solid rgba(255,255,255,0.7)",
 };
 
 const titleRow = {
@@ -501,6 +527,12 @@ const vehicleTitleStyle = {
   marginBottom: "5px",
   fontSize: "clamp(28px, 4vw, 40px)",
   lineHeight: "1.2",
+  color: "#111827",
+};
+
+const brandStyle = {
+  color: "#6b7280",
+  marginTop: 0,
 };
 
 const availabilityBadge = {
@@ -540,6 +572,12 @@ const priceStyle = {
   marginTop: "18px",
 };
 
+const dividerStyle = {
+  border: "none",
+  borderTop: "1px solid #e5e7eb",
+  margin: "22px 0",
+};
+
 const calendarGrid = {
   display: "grid",
   gridTemplateColumns: "repeat(auto-fit, minmax(80px, 1fr))",
@@ -571,8 +609,8 @@ const inputStyle = {
 
 const summaryBox = {
   marginTop: "20px",
-  padding: "15px",
-  borderRadius: "10px",
+  padding: "20px",
+  borderRadius: "15px",
 };
 
 const totalPriceText = {
@@ -586,10 +624,11 @@ const bookBtn = {
   marginTop: "25px",
   color: "white",
   border: "none",
-  padding: "13px 24px",
-  borderRadius: "8px",
+  padding: "14px 24px",
+  borderRadius: "10px",
   width: "100%",
   fontWeight: "bold",
+  fontSize: "16px",
 };
 
 export default Vehicles;
