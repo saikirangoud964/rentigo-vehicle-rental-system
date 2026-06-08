@@ -17,6 +17,13 @@ function Register() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  const passwordStrength =
+    formData.password.length >= 8
+      ? "Strong"
+      : formData.password.length >= 5
+        ? "Medium"
+        : "Weak";
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -76,25 +83,48 @@ function Register() {
 
   return (
     <div style={pageStyle}>
+      <div style={backgroundGlowOne}></div>
+      <div style={backgroundGlowTwo}></div>
+
       <div style={leftBoxStyle}>
-        <h1 style={heroTitle}>Join RentiGo 🚗</h1>
+        <span style={badgeStyle}>🚗 RentiGo Rental Platform</span>
+
+        <h1 style={heroTitle}>Start your rental journey today</h1>
 
         <p style={heroText}>
-          Create your account and book bikes, scooters, cars, and SUVs easily.
+          Create your RentiGo account to book bikes, scooters, cars and SUVs
+          with secure payments, invoices and real-time booking tracking.
         </p>
 
-        <div style={featureBox}>
-          <p>✅ Easy vehicle booking</p>
-          <p>✅ Dummy payment support</p>
-          <p>✅ Invoice download</p>
-          <p>✅ Track your bookings</p>
+        <div style={featureGrid}>
+          <div style={featureCard}>
+            <h3>🚘 Easy Booking</h3>
+            <p>Book your favourite vehicle in a few clicks.</p>
+          </div>
+
+          <div style={featureCard}>
+            <h3>💳 Razorpay Payment</h3>
+            <p>Fast and secure online payment support.</p>
+          </div>
+
+          <div style={featureCard}>
+            <h3>📄 Invoice Ready</h3>
+            <p>Download invoices for your bookings anytime.</p>
+          </div>
+
+          <div style={featureCard}>
+            <h3>📊 Track Trips</h3>
+            <p>Manage all bookings from your dashboard.</p>
+          </div>
         </div>
       </div>
 
       <div style={cardStyle}>
+        <div style={cardTopIcon}>R</div>
+
         <h2 style={titleStyle}>Create Account</h2>
 
-        <p style={subtitleStyle}>Register to start your rental journey</p>
+        <p style={subtitleStyle}>Register to access RentiGo</p>
 
         <form onSubmit={handleSubmit}>
           <label style={labelStyle}>Full Name</label>
@@ -143,6 +173,24 @@ function Register() {
             </button>
           </div>
 
+          {formData.password && (
+            <div style={strengthBox}>
+              <span>Password Strength:</span>
+              <strong
+                style={{
+                  color:
+                    passwordStrength === "Strong"
+                      ? "#16a34a"
+                      : passwordStrength === "Medium"
+                        ? "#f59e0b"
+                        : "#dc2626",
+                }}
+              >
+                {passwordStrength}
+              </strong>
+            </div>
+          )}
+
           <label style={labelStyle}>Confirm Password</label>
 
           <input
@@ -172,59 +220,121 @@ function Register() {
 }
 
 const pageStyle = {
+  position: "relative",
+  overflow: "hidden",
   minHeight: "calc(100vh - 90px)",
   display: "grid",
   gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-  gap: "clamp(25px, 5vw, 40px)",
+  gap: "clamp(25px, 5vw, 50px)",
   alignItems: "center",
-  padding: "clamp(20px, 5vw, 50px)",
-  background: "linear-gradient(135deg, #eef2ff, #f8fafc)",
+  padding: "clamp(20px, 5vw, 60px)",
+  background: "linear-gradient(135deg, #020617, #0f172a 45%, #1e3a8a)",
   boxSizing: "border-box",
 };
 
+const backgroundGlowOne = {
+  position: "absolute",
+  width: "300px",
+  height: "300px",
+  borderRadius: "50%",
+  background: "rgba(37,99,235,0.35)",
+  top: "-80px",
+  left: "-80px",
+  filter: "blur(20px)",
+};
+
+const backgroundGlowTwo = {
+  position: "absolute",
+  width: "280px",
+  height: "280px",
+  borderRadius: "50%",
+  background: "rgba(34,197,94,0.22)",
+  bottom: "-90px",
+  right: "-90px",
+  filter: "blur(20px)",
+};
+
 const leftBoxStyle = {
+  position: "relative",
+  zIndex: 1,
   padding: "clamp(10px, 3vw, 30px)",
+  color: "#fff",
+};
+
+const badgeStyle = {
+  display: "inline-block",
+  background: "rgba(255,255,255,0.12)",
+  border: "1px solid rgba(255,255,255,0.22)",
+  color: "#dbeafe",
+  padding: "9px 14px",
+  borderRadius: "999px",
+  fontWeight: "700",
+  marginBottom: "20px",
 };
 
 const heroTitle = {
-  fontSize: "clamp(32px, 5vw, 48px)",
-  color: "#111827",
-  marginBottom: "15px",
-  lineHeight: "1.2",
+  fontSize: "clamp(36px, 6vw, 62px)",
+  color: "#fff",
+  marginBottom: "18px",
+  lineHeight: "1.08",
+  maxWidth: "680px",
 };
 
 const heroText = {
   fontSize: "clamp(16px, 2vw, 20px)",
-  color: "#4b5563",
-  lineHeight: "1.6",
-  maxWidth: "520px",
+  color: "#cbd5e1",
+  lineHeight: "1.7",
+  maxWidth: "620px",
 };
 
-const featureBox = {
-  marginTop: "30px",
-  background: "white",
-  padding: "clamp(18px, 3vw, 25px)",
-  borderRadius: "16px",
-  boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
-  fontSize: "clamp(15px, 2vw, 17px)",
-  color: "#111827",
-  maxWidth: "420px",
+const featureGrid = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))",
+  gap: "16px",
+  marginTop: "32px",
+  maxWidth: "650px",
+};
+
+const featureCard = {
+  background: "rgba(255,255,255,0.1)",
+  border: "1px solid rgba(255,255,255,0.18)",
+  backdropFilter: "blur(12px)",
+  padding: "18px",
+  borderRadius: "18px",
+  boxShadow: "0 12px 30px rgba(0,0,0,0.18)",
 };
 
 const cardStyle = {
+  position: "relative",
+  zIndex: 1,
   width: "100%",
-  maxWidth: "440px",
-  background: "#fff",
-  padding: "clamp(24px, 4vw, 35px)",
-  borderRadius: "20px",
-  boxShadow: "0 12px 30px rgba(0,0,0,0.12)",
+  maxWidth: "460px",
+  background: "rgba(255,255,255,0.96)",
+  padding: "clamp(24px, 4vw, 38px)",
+  borderRadius: "26px",
+  boxShadow: "0 25px 70px rgba(0,0,0,0.35)",
   justifySelf: "center",
   boxSizing: "border-box",
+  border: "1px solid rgba(255,255,255,0.65)",
+};
+
+const cardTopIcon = {
+  width: "54px",
+  height: "54px",
+  borderRadius: "16px",
+  background: "linear-gradient(135deg, #2563eb, #06b6d4)",
+  color: "#fff",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  fontWeight: "900",
+  fontSize: "24px",
+  margin: "0 auto 16px",
 };
 
 const titleStyle = {
   textAlign: "center",
-  fontSize: "clamp(26px, 4vw, 30px)",
+  fontSize: "clamp(27px, 4vw, 34px)",
   marginBottom: "8px",
   color: "#111827",
 };
@@ -238,64 +348,76 @@ const subtitleStyle = {
 const labelStyle = {
   display: "block",
   marginBottom: "6px",
-  fontWeight: "600",
+  fontWeight: "700",
   color: "#374151",
 };
 
 const inputStyle = {
   width: "100%",
-  padding: "13px",
+  padding: "14px",
   marginBottom: "16px",
   border: "1px solid #d1d5db",
-  borderRadius: "10px",
+  borderRadius: "12px",
   fontSize: "15px",
   outline: "none",
   boxSizing: "border-box",
+  background: "#f9fafb",
 };
 
 const passwordBoxStyle = {
   display: "flex",
   alignItems: "center",
   border: "1px solid #d1d5db",
-  borderRadius: "10px",
-  marginBottom: "16px",
+  borderRadius: "12px",
+  marginBottom: "10px",
   overflow: "hidden",
+  background: "#f9fafb",
 };
 
 const passwordInputStyle = {
   flex: 1,
-  padding: "13px",
+  padding: "14px",
   border: "none",
   outline: "none",
   fontSize: "15px",
   minWidth: 0,
+  background: "transparent",
 };
 
 const showBtnStyle = {
-  padding: "13px",
+  padding: "14px",
   border: "none",
-  background: "#f3f4f6",
+  background: "#e5e7eb",
   cursor: "pointer",
-  fontWeight: "600",
+  fontWeight: "700",
   whiteSpace: "nowrap",
+};
+
+const strengthBox = {
+  display: "flex",
+  justifyContent: "space-between",
+  marginBottom: "16px",
+  fontSize: "14px",
+  color: "#6b7280",
 };
 
 const buttonStyle = {
   width: "100%",
-  padding: "14px",
-  backgroundColor: "#111827",
+  padding: "15px",
+  background: "linear-gradient(135deg, #2563eb, #111827)",
   color: "white",
   border: "none",
-  borderRadius: "10px",
+  borderRadius: "12px",
   cursor: "pointer",
   fontSize: "16px",
   fontWeight: "bold",
   marginTop: "5px",
+  boxShadow: "0 10px 24px rgba(37,99,235,0.35)",
 };
 
 const loginTextStyle = {
   textAlign: "center",
-  marginTop: "20px",
+  marginTop: "22px",
   color: "#6b7280",
 };
 
