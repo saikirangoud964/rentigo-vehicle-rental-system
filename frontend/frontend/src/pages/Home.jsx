@@ -47,7 +47,7 @@ function Home() {
   const fourWheelers = vehicles.filter((v) => v.type === "4W").length;
 
   return (
-    <div>
+    <div style={pageStyle}>
       <section style={heroSectionStyle}>
         <div style={heroContentStyle}>
           <h4 style={smallTitleStyle}>Vehicle Rentals</h4>
@@ -140,6 +140,10 @@ function Home() {
                 }
                 alt={vehicle.name}
                 style={vehicleImageStyle}
+                onError={(e) => {
+                  e.target.src =
+                    "https://via.placeholder.com/400x250?text=Vehicle";
+                }}
               />
 
               <div style={vehicleContentStyle}>
@@ -192,14 +196,6 @@ function Home() {
   );
 }
 
-const heroSectionStyle = {
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-  gap: "40px",
-  alignItems: "center",
-  padding: "clamp(25px, 5vw, 60px)",
-  background: "transparent",
-};
 const pageStyle = {
   minHeight: "100vh",
   background: `
@@ -208,6 +204,16 @@ const pageStyle = {
     linear-gradient(135deg, #f8fafc, #e0f2fe)
   `,
 };
+
+const heroSectionStyle = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+  gap: "40px",
+  alignItems: "center",
+  padding: "clamp(25px, 5vw, 60px)",
+  background: "transparent",
+};
+
 const heroContentStyle = {
   width: "100%",
 };
@@ -278,6 +284,7 @@ const imageStyle = {
   width: "100%",
   maxWidth: "650px",
   borderRadius: "20px",
+  boxShadow: "0 14px 35px rgba(37,99,235,0.18)",
 };
 
 const statsSectionStyle = {
@@ -285,20 +292,21 @@ const statsSectionStyle = {
   gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
   gap: "20px",
   padding: "clamp(25px, 5vw, 50px)",
-  background: "#fff",
+  background: "transparent",
 };
 
 const statCardStyle = {
   textAlign: "center",
-  background: "#f8fafc",
+  background: "rgba(255,255,255,0.85)",
   padding: "25px",
   borderRadius: "16px",
-  boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
+  boxShadow: "0 8px 24px rgba(37,99,235,0.1)",
+  border: "1px solid rgba(255,255,255,0.7)",
 };
 
 const latestSectionStyle = {
   padding: "clamp(30px, 5vw, 60px)",
-  background: "#f9fafb",
+  background: "transparent",
   textAlign: "center",
 };
 
@@ -320,11 +328,12 @@ const vehicleGridStyle = {
 };
 
 const vehicleCardStyle = {
-  background: "#fff",
+  background: "rgba(255,255,255,0.95)",
   borderRadius: "16px",
   overflow: "hidden",
-  boxShadow: "0 5px 18px rgba(0,0,0,0.08)",
+  boxShadow: "0 8px 24px rgba(37,99,235,0.12)",
   textAlign: "left",
+  border: "1px solid rgba(255,255,255,0.7)",
 };
 
 const vehicleImageStyle = {
@@ -365,7 +374,7 @@ const exploreBtnStyle = {
 };
 
 const whySectionStyle = {
-  background: "#fff",
+  background: "transparent",
   padding: "clamp(30px, 5vw, 60px)",
   textAlign: "center",
 };
@@ -382,10 +391,11 @@ const featuresStyle = {
 };
 
 const featureCardStyle = {
-  background: "#f8fafc",
+  background: "rgba(255,255,255,0.9)",
   padding: "25px",
   borderRadius: "16px",
-  boxShadow: "0 5px 18px rgba(0,0,0,0.08)",
+  boxShadow: "0 8px 24px rgba(37,99,235,0.1)",
+  border: "1px solid rgba(255,255,255,0.7)",
 };
 
 export default Home;
