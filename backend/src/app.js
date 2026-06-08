@@ -7,7 +7,7 @@ const bookingRoutes = require("./routes/bookingRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const analyticsRoutes = require("./routes/analyticsRoutes");
-const paymentRoutes = require("./src/routes/paymentRoutes");
+const paymentRoutes = require("./routes/paymentRoutes");
 const app = express();
 
 /*
