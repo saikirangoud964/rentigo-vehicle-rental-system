@@ -77,12 +77,12 @@ function Login() {
 
         <div style={statsGrid}>
           <div style={statCard}>
-            <h2>500+</h2>
+            <h2>50+</h2>
             <p>Vehicles</p>
           </div>
 
           <div style={statCard}>
-            <h2>10K+</h2>
+            <h2>1K+</h2>
             <p>Bookings</p>
           </div>
 
