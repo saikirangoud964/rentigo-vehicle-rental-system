@@ -12,6 +12,9 @@ function Vehicles() {
   const [pickupDate, setPickupDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
   const [bookedDates, setBookedDates] = useState([]);
+  const [paying, setPaying] = useState(false);
+
+  const API_URL = "https://rentigo-vehicle-rental-system.onrender.com/api";
 
   useEffect(() => {
     fetchVehicle();
@@ -20,10 +23,7 @@ function Vehicles() {
 
   const fetchVehicle = async () => {
     try {
-      const { data } = await axios.get(
-        `https://rentigo-vehicle-rental-system.onrender.com/api/vehicles/${id}`,
-      );
-
+      const { data } = await axios.get(`${API_URL}/vehicles/${id}`);
       setVehicle(data.vehicle);
     } catch (error) {
       console.error(error);
@@ -34,18 +34,34 @@ function Vehicles() {
   const fetchBookedDates = async () => {
     try {
       const { data } = await axios.get(
-        `https://rentigo-vehicle-rental-system.onrender.com/api/bookings/vehicle/${id}/booked-dates`,
+        `${API_URL}/bookings/vehicle/${id}/booked-dates`,
       );
-
       setBookedDates(data.bookedDates || []);
     } catch (error) {
       console.error("BOOKED DATES ERROR:", error);
     }
   };
 
+  const getUserInfo = () => JSON.parse(localStorage.getItem("userInfo"));
+
   const getToken = () => {
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const userInfo = getUserInfo();
     return userInfo?.token;
+  };
+
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      if (window.Razorpay) {
+        resolve(true);
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
   };
 
   const calculateDays = () => {
@@ -84,9 +100,7 @@ function Vehicles() {
       date <= end;
       date.setDate(date.getDate() + 1)
     ) {
-      if (isDateBooked(date)) {
-        return true;
-      }
+      if (isDateBooked(date)) return true;
     }
 
     return false;
@@ -125,15 +139,15 @@ function Vehicles() {
     }
 
     if (selectedRangeBooked) {
-      showNotification(
-        "Selected dates include already booked dates. Please choose different dates.",
-        "error",
-      );
+      showNotification("Selected dates include booked dates", "error");
       return;
     }
 
     try {
+      setPaying(true);
+
       const token = getToken();
+      const userInfo = getUserInfo();
 
       if (!token) {
         showNotification("Please login first", "error");
@@ -141,39 +155,76 @@ function Vehicles() {
         return;
       }
 
-      const confirmed = window.confirm(
-        `Proceed to dummy payment of ₹${totalPrice}?`,
-      );
+      const scriptLoaded = await loadRazorpayScript();
 
-      if (!confirmed) return;
+      if (!scriptLoaded) {
+        showNotification("Razorpay failed to load", "error");
+        return;
+      }
 
-      const paymentId = "DUMMY_" + Date.now();
+      const orderRes = await axios.post(`${API_URL}/payments/create-order`, {
+        amount: totalPrice,
+      });
 
-      await axios.post(
-        "https://rentigo-vehicle-rental-system.onrender.com/api/bookings",
-        {
-          vehicleId: vehicle._id,
-          startDate: pickupDate,
-          endDate: returnDate,
-          paymentStatus: "Paid",
-          paymentId,
-          amountPaid: totalPrice,
+      const { order, key } = orderRes.data;
+
+      const options = {
+        key,
+        amount: order.amount,
+        currency: "INR",
+        name: "RentiGo",
+        description: `Booking for ${vehicle.name}`,
+        order_id: order.id,
+
+        handler: async function (response) {
+          try {
+            await axios.post(`${API_URL}/payments/verify`, response);
+
+            await axios.post(
+              `${API_URL}/bookings`,
+              {
+                vehicleId: vehicle._id,
+                startDate: pickupDate,
+                endDate: returnDate,
+                paymentStatus: "Paid",
+                paymentId: response.razorpay_payment_id,
+                amountPaid: totalPrice,
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              },
+            );
+
+            showNotification("💳 Payment Successful & Booking Confirmed");
+            navigate("/my-bookings");
+          } catch (error) {
+            console.error(error);
+            showNotification("Payment verification failed", "error");
+          }
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
 
-      showNotification("💳 Payment Successful & Booking Confirmed");
-      navigate("/my-bookings");
+        prefill: {
+          name: userInfo?.name || "",
+          email: userInfo?.email || "",
+        },
+
+        theme: {
+          color: "#2563eb",
+        },
+      };
+
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
     } catch (error) {
       console.error(error);
       showNotification(
-        error.response?.data?.message || "Failed to create booking",
+        error.response?.data?.message || "Payment failed",
         "error",
       );
+    } finally {
+      setPaying(false);
     }
   };
 
@@ -344,7 +395,7 @@ function Vehicles() {
               </p>
 
               <p>
-                <strong>Payment Mode:</strong> Dummy Payment
+                <strong>Payment Mode:</strong> Razorpay
               </p>
 
               {selectedRangeBooked && (
@@ -357,22 +408,24 @@ function Vehicles() {
 
           <button
             onClick={handleBooking}
-            disabled={!vehicle.available || selectedRangeBooked}
+            disabled={!vehicle.available || selectedRangeBooked || paying}
             style={{
               ...bookBtn,
               background:
                 vehicle.available && !selectedRangeBooked ? "#2563eb" : "#999",
               cursor:
-                vehicle.available && !selectedRangeBooked
+                vehicle.available && !selectedRangeBooked && !paying
                   ? "pointer"
                   : "not-allowed",
             }}
           >
-            {vehicle.available
-              ? selectedRangeBooked
-                ? "❌ Dates Not Available"
-                : `💳 Pay ₹${totalPrice || vehicle.pricePerDay} & Book`
-              : "🚫 Not Available"}
+            {paying
+              ? "Opening Payment..."
+              : vehicle.available
+                ? selectedRangeBooked
+                  ? "❌ Dates Not Available"
+                  : `💳 Pay ₹${totalPrice || vehicle.pricePerDay} & Book`
+                : "🚫 Not Available"}
           </button>
         </div>
       </div>
