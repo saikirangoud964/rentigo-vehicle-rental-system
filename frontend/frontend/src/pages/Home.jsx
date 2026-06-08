@@ -42,7 +42,7 @@ function Home() {
     );
   };
 
-  const latestVehicles = vehicles.slice(0, 6);
+  const latestVehicles = vehicles.slice(0, 4);
   const twoWheelers = vehicles.filter((v) => v.type === "2W").length;
   const fourWheelers = vehicles.filter((v) => v.type === "4W").length;
 
