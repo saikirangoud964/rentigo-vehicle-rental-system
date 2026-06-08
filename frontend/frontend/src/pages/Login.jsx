@@ -16,10 +16,7 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
@@ -47,9 +44,7 @@ function Login() {
       localStorage.setItem("userInfo", JSON.stringify(userInfo));
       localStorage.setItem("token", data.token);
 
-      if (login) {
-        login(userInfo);
-      }
+      if (login) login(userInfo);
 
       alert("Login Successful 🎉");
 
@@ -59,7 +54,6 @@ function Login() {
         navigate("/");
       }
     } catch (error) {
-      console.log(error);
       alert(error.response?.data?.message || "Login Failed");
     } finally {
       setLoading(false);
@@ -68,27 +62,46 @@ function Login() {
 
   return (
     <div style={pageStyle}>
-      {/* Left Section */}
       <div style={leftBoxStyle}>
-        <h1 style={heroTitle}>Welcome Back 👋</h1>
+        <span style={badgeStyle}>🚗 RentiGo Rental Platform</span>
+
+        <h1 style={heroTitle}>
+          Welcome Back to <br />
+          <span style={highlightText}>RentiGo</span>
+        </h1>
 
         <p style={heroText}>
-          Login to your RentiGo account and continue booking your favorite
-          vehicles.
+          Continue your journey with smart vehicle rentals, secure payments,
+          booking tracking and instant invoices.
         </p>
 
-        <div style={featureBox}>
-          <p>🚗 Book cars, bikes, scooters, and SUVs</p>
-          <p>💳 Secure payment experience</p>
-          <p>📄 Download booking invoices</p>
-          <p>📊 Track all your bookings easily</p>
+        <div style={statsGrid}>
+          <div style={statCard}>
+            <h2>500+</h2>
+            <p>Vehicles</p>
+          </div>
+
+          <div style={statCard}>
+            <h2>10K+</h2>
+            <p>Bookings</p>
+          </div>
+
+          <div style={statCard}>
+            <h2>4.9★</h2>
+            <p>Rating</p>
+          </div>
+
+          <div style={statCard}>
+            <h2>24/7</h2>
+            <p>Support</p>
+          </div>
         </div>
       </div>
 
-      {/* Login Card */}
       <div style={cardStyle}>
-        <h2 style={titleStyle}>Login 🔐</h2>
+        <div style={iconStyle}>🔐</div>
 
+        <h2 style={titleStyle}>Login</h2>
         <p style={subtitleStyle}>Access your RentiGo account</p>
 
         <form onSubmit={handleSubmit}>
@@ -126,7 +139,6 @@ function Login() {
             </button>
           </div>
 
-          {/* Forgot Password */}
           <div style={forgotContainerStyle}>
             <Link to="/forgot-password" style={forgotLinkStyle}>
               Forgot Password?
@@ -149,59 +161,94 @@ function Login() {
   );
 }
 
-/* ================= STYLES ================= */
-
 const pageStyle = {
-  minHeight: "calc(100vh - 90px)",
+  minHeight: "calc(100vh - 70px)",
   display: "grid",
-  gridTemplateColumns: "1fr 1fr",
-  gap: "40px",
+  gridTemplateColumns: "1.1fr 0.9fr",
+  gap: "35px",
   alignItems: "center",
-  padding: "50px",
-  background: "linear-gradient(135deg, #eef2ff, #f8fafc)",
+  padding: "35px 60px",
+  background: "linear-gradient(135deg, #020617, #0f172a 45%, #1e3a8a)",
+  boxSizing: "border-box",
 };
 
 const leftBoxStyle = {
-  padding: "30px",
+  color: "#fff",
+};
+
+const badgeStyle = {
+  display: "inline-block",
+  background: "rgba(255,255,255,0.12)",
+  border: "1px solid rgba(255,255,255,0.22)",
+  color: "#dbeafe",
+  padding: "8px 14px",
+  borderRadius: "999px",
+  fontWeight: "700",
+  marginBottom: "18px",
 };
 
 const heroTitle = {
-  fontSize: "48px",
-  color: "#111827",
-  marginBottom: "15px",
+  fontSize: "clamp(38px, 5vw, 62px)",
+  color: "#fff",
+  marginBottom: "16px",
+  lineHeight: "1.05",
+};
+
+const highlightText = {
+  color: "#60a5fa",
 };
 
 const heroText = {
-  fontSize: "20px",
-  color: "#4b5563",
+  fontSize: "18px",
+  color: "#cbd5e1",
   lineHeight: "1.6",
-  maxWidth: "520px",
+  maxWidth: "620px",
 };
 
-const featureBox = {
+const statsGrid = {
+  display: "grid",
+  gridTemplateColumns: "repeat(2, 1fr)",
+  gap: "16px",
   marginTop: "30px",
-  background: "#fff",
-  padding: "25px",
-  borderRadius: "16px",
-  boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
-  fontSize: "17px",
-  color: "#111827",
-  maxWidth: "420px",
+  maxWidth: "560px",
+};
+
+const statCard = {
+  background: "rgba(255,255,255,0.1)",
+  border: "1px solid rgba(255,255,255,0.18)",
+  padding: "20px",
+  borderRadius: "18px",
+  textAlign: "center",
+  boxShadow: "0 12px 30px rgba(0,0,0,0.18)",
 };
 
 const cardStyle = {
   width: "100%",
-  maxWidth: "440px",
-  background: "#fff",
-  padding: "35px",
-  borderRadius: "20px",
-  boxShadow: "0 12px 30px rgba(0,0,0,0.12)",
+  maxWidth: "460px",
+  background: "rgba(255,255,255,0.96)",
+  padding: "34px",
+  borderRadius: "26px",
+  boxShadow: "0 25px 70px rgba(0,0,0,0.35)",
   justifySelf: "center",
+  boxSizing: "border-box",
+};
+
+const iconStyle = {
+  width: "60px",
+  height: "60px",
+  borderRadius: "18px",
+  background: "linear-gradient(135deg, #2563eb, #06b6d4)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  fontSize: "28px",
+  margin: "0 auto 15px",
+  color: "#fff",
 };
 
 const titleStyle = {
   textAlign: "center",
-  fontSize: "30px",
+  fontSize: "32px",
   marginBottom: "8px",
   color: "#111827",
 };
@@ -215,16 +262,17 @@ const subtitleStyle = {
 const labelStyle = {
   display: "block",
   marginBottom: "6px",
-  fontWeight: "600",
+  fontWeight: "700",
   color: "#374151",
 };
 
 const inputStyle = {
   width: "100%",
-  padding: "13px",
+  padding: "14px",
   marginBottom: "16px",
+  borderRadius: "12px",
   border: "1px solid #d1d5db",
-  borderRadius: "10px",
+  background: "#f8fafc",
   fontSize: "15px",
   outline: "none",
   boxSizing: "border-box",
@@ -234,24 +282,27 @@ const passwordBoxStyle = {
   display: "flex",
   alignItems: "center",
   border: "1px solid #d1d5db",
-  borderRadius: "10px",
+  borderRadius: "12px",
   overflow: "hidden",
+  background: "#f8fafc",
 };
 
 const passwordInputStyle = {
   flex: 1,
-  padding: "13px",
+  padding: "14px",
   border: "none",
   outline: "none",
   fontSize: "15px",
+  minWidth: 0,
+  background: "transparent",
 };
 
 const showBtnStyle = {
-  padding: "13px",
+  padding: "14px",
   border: "none",
-  background: "#f3f4f6",
+  background: "#e5e7eb",
   cursor: "pointer",
-  fontWeight: "600",
+  fontWeight: "700",
 };
 
 const forgotContainerStyle = {
@@ -263,24 +314,24 @@ const forgotContainerStyle = {
 const forgotLinkStyle = {
   color: "#2563eb",
   textDecoration: "none",
-  fontWeight: "600",
+  fontWeight: "700",
 };
 
 const buttonStyle = {
   width: "100%",
-  padding: "14px",
-  backgroundColor: "#111827",
-  color: "#fff",
+  padding: "15px",
   border: "none",
-  borderRadius: "10px",
-  cursor: "pointer",
+  borderRadius: "12px",
+  fontWeight: "700",
   fontSize: "16px",
-  fontWeight: "bold",
+  cursor: "pointer",
+  background: "linear-gradient(135deg, #2563eb, #111827)",
+  color: "#fff",
 };
 
 const registerTextStyle = {
   textAlign: "center",
-  marginTop: "20px",
+  marginTop: "22px",
   color: "#6b7280",
 };
 
