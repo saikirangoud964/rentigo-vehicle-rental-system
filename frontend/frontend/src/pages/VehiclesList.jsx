@@ -172,9 +172,13 @@ function VehiclesList() {
 }
 
 const pageStyle = {
+  minHeight: "100vh",
   padding: "clamp(16px, 4vw, 40px)",
-  background: "#f9fafb",
-  minHeight: "80vh",
+  background: `
+    radial-gradient(circle at top left, #60a5fa33, transparent 30%),
+    radial-gradient(circle at bottom right, #2563eb33, transparent 30%),
+    linear-gradient(135deg, #f8fafc, #e0f2fe)
+  `,
   boxSizing: "border-box",
 };
 
