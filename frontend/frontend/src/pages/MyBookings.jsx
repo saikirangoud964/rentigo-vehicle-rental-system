@@ -276,7 +276,7 @@ const loadingStyle = {
 
 const pageStyle = {
   padding: "clamp(16px, 4vw, 30px)",
-  backgroundColor: "#b9d6f2",
+  backgroundColor: "#b6dafb",
   minHeight: "80vh",
   boxSizing: "border-box",
 };
